@@ -20,12 +20,50 @@ function App() {
       }));
       setNotifications(parsedNotifications);
     }
+
+    // 保存されたURLを読み込み
+    const savedUrls = localStorage.getItem('monitoredUrls');
+    if (savedUrls) {
+      const parsedUrls = JSON.parse(savedUrls).map((url: any) => ({
+        ...url,
+        lastChecked: new Date(url.lastChecked),
+        lastModified: url.lastModified ? new Date(url.lastModified) : null
+      }));
+      setUrls(parsedUrls);
+      
+      // 監視を再開
+      parsedUrls.forEach((url: URLItem) => {
+        urlChecker.startMonitoring(url, (updatedUrl) => {
+          setUrls(prev => prev.map(u => u.id === updatedUrl.id ? updatedUrl : u));
+          
+          // 更新があった場合、通知を作成
+          if (updatedUrl.status === 'updated') {
+            const notification: UpdateNotification = {
+              id: Date.now().toString(),
+              urlId: updatedUrl.id,
+              title: updatedUrl.title,
+              url: updatedUrl.url,
+              timestamp: new Date(),
+              read: false
+            };
+            
+            setNotifications(prev => [notification, ...prev]);
+            setCurrentNotification(notification);
+          }
+        });
+      });
+    }
   }, []);
 
   useEffect(() => {
     // 通知をローカルストレージに保存
     localStorage.setItem('notifications', JSON.stringify(notifications));
   }, [notifications]);
+
+  useEffect(() => {
+    // URLをローカルストレージに保存
+    localStorage.setItem('monitoredUrls', JSON.stringify(urls));
+  }, [urls]);
 
   const handleUrlsChange = (newUrls: URLItem[]) => {
     setUrls(newUrls);
