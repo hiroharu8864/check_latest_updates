@@ -1,0 +1,244 @@
+.admin-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #e0e0e0;
+}
+
+.add-url-form {
+  background: rgba(40, 44, 60, 0.8);
+  padding: 25px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.add-url-form h2 {
+  color: #61dafb;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #b0b0b0;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #4a4a5a;
+  border-radius: 4px;
+  font-size: 14px;
+  background: rgba(60, 64, 80, 0.8);
+  color: #e0e0e0;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #61dafb;
+  box-shadow: 0 0 0 2px rgba(97, 218, 251, 0.25);
+  background: rgba(70, 74, 90, 0.9);
+}
+
+.form-group input.error {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.25);
+}
+
+.form-group input::placeholder {
+  color: #8a8a8a;
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  display: block;
+}
+
+.add-button {
+  background: linear-gradient(135deg, #61dafb 0%, #4fc3f7 100%);
+  color: #1a1a2e;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(97, 218, 251, 0.3);
+}
+
+.add-button:hover {
+  background: linear-gradient(135deg, #4fc3f7 0%, #61dafb 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(97, 218, 251, 0.4);
+}
+
+.url-list h2 {
+  color: #61dafb;
+  margin-bottom: 20px;
+}
+
+.no-urls {
+  text-align: center;
+  color: #8a8a8a;
+  font-style: italic;
+  padding: 40px;
+}
+
+.url-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.url-card {
+  background: rgba(40, 44, 60, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+}
+
+.url-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  transform: translateY(-2px);
+  border-color: rgba(97, 218, 251, 0.3);
+}
+
+.url-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.url-header h3 {
+  margin: 0;
+  color: #e0e0e0;
+  font-size: 16px;
+}
+
+.remove-button {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+}
+
+.remove-button:hover {
+  background: linear-gradient(135deg, #ff5252 0%, #ff6b6b 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(255, 107, 107, 0.4);
+}
+
+.url-link {
+  margin: 10px 0;
+}
+
+.url-link a {
+  color: #61dafb;
+  text-decoration: none;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+.url-link a:hover {
+  text-decoration: underline;
+  color: #4fc3f7;
+}
+
+.url-info {
+  margin: 15px 0;
+}
+
+.url-info p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #b0b0b0;
+}
+
+.status {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.status.checking {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.status.updated {
+  background: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.status.unchanged {
+  background: rgba(97, 218, 251, 0.2);
+  color: #61dafb;
+  border: 1px solid rgba(97, 218, 251, 0.3);
+}
+
+.status.error {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.url-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.interval-input {
+  width: 80px;
+  padding: 4px 8px;
+  border: 1px solid #4a4a5a;
+  border-radius: 4px;
+  font-size: 12px;
+  background: rgba(60, 64, 80, 0.8);
+  color: #e0e0e0;
+}
+
+.interval-input:focus {
+  border-color: #61dafb;
+  box-shadow: 0 0 0 2px rgba(97, 218, 251, 0.25);
+}
+
+.url-actions label {
+  font-size: 12px;
+  color: #b0b0b0;
+}
+
+@media (max-width: 768px) {
+  .url-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-container {
+    padding: 10px;
+  }
+  
+  .add-url-form {
+    padding: 15px;
+  }
+}
