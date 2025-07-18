@@ -12,6 +12,15 @@
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
+.monitor-header-with-character {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
 .stats {
   display: flex;
   gap: 30px;
@@ -303,6 +312,13 @@
     gap: 20px;
   }
   
+  .monitor-header-with-character {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-bottom: 20px;
+  }
+  
   .stats {
     gap: 20px;
   }
@@ -314,5 +330,6 @@
   
   .monitor-container {
     padding: 10px;
+    position: relative;
   }
 }

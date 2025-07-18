@@ -4,7 +4,7 @@ import { URLItem, UpdateNotification } from '../types';
 import Home from '../pages/Home';
 import Admin from '../pages/Admin';
 import Monitor from '../pages/Monitor';
-import NotFound from '../NotFound';
+import NotFound from '../pages/NotFound';
 
 interface RouterProps {
   urls: URLItem[];

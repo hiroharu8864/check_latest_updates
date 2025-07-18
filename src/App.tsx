@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { URLItem, UpdateNotification } from './types';
 import { URLChecker } from './utils/urlChecker';
+import { getItem, setItem } from './utils/storage';
 import Router from './router/Router';
 import Popup from './components/Popup';
 
@@ -12,9 +13,9 @@ function App() {
 
   useEffect(() => {
     // 保存された通知を読み込み
-    const savedNotifications = localStorage.getItem('notifications');
+    const savedNotifications = getItem('notifications');
     if (savedNotifications) {
-      const parsedNotifications = JSON.parse(savedNotifications).map((n: any) => ({
+      const parsedNotifications = savedNotifications.map((n: any) => ({
         ...n,
         timestamp: new Date(n.timestamp)
       }));
@@ -22,9 +23,9 @@ function App() {
     }
 
     // 保存されたURLを読み込み
-    const savedUrls = localStorage.getItem('monitoredUrls');
+    const savedUrls = getItem('monitoredUrls');
     if (savedUrls) {
-      const parsedUrls = JSON.parse(savedUrls).map((url: any) => ({
+      const parsedUrls = savedUrls.map((url: any) => ({
         ...url,
         lastChecked: new Date(url.lastChecked),
         lastModified: url.lastModified ? new Date(url.lastModified) : null
@@ -57,12 +58,16 @@ function App() {
 
   useEffect(() => {
     // 通知をローカルストレージに保存
-    localStorage.setItem('notifications', JSON.stringify(notifications));
+    if (notifications.length > 0) {
+      setItem('notifications', notifications);
+    }
   }, [notifications]);
 
   useEffect(() => {
     // URLをローカルストレージに保存
-    localStorage.setItem('monitoredUrls', JSON.stringify(urls));
+    if (urls.length > 0) {
+      setItem('monitoredUrls', urls);
+    }
   }, [urls]);
 
   const handleUrlsChange = (newUrls: URLItem[]) => {

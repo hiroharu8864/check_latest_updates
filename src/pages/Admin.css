@@ -3,6 +3,14 @@
   color: #e0e0e0;
 }
 
+.admin-header-with-character {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
 .add-url-form {
   background: rgba(40, 44, 60, 0.8);
   padding: 25px;

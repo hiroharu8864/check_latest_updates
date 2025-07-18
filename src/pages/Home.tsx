@@ -10,16 +10,16 @@ const Home: React.FC = () => {
       <Navigation />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h1>監視君ベータ</h1>
+        <h1>更新確認君ベータ</h1>
         <p>
-          Webサイトの更新を自動的に監視し、変更があった場合に通知します。
+          Webサイトの更新を自動的に確認し、変更があった場合に通知します。
         </p>
         <div className="nav-links">
           <Link to="/admin" className="App-link">
             管理ページ
           </Link>
           <Link to="/monitor" className="App-link">
-            監視ページ
+            更新確認ページ
           </Link>
         </div>
         <div className="features">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { URLItem, UpdateNotification } from '../types';
 import PageLayout from '../components/PageLayout';
+import MonitorCharacter from '../components/MonitorCharacter';
 import './Monitor.css';
 
 interface MonitorProps {
@@ -82,17 +83,49 @@ const Monitor: React.FC<MonitorProps> = ({
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
+  // キャラクターの状態を決定
+  const getCharacterMood = () => {
+    if (urls.length === 0) return 'sleeping';
+    
+    const updatedCount = urls.filter(u => u.status === 'updated').length;
+    const errorCount = urls.filter(u => u.status === 'error').length;
+    
+    if (unreadCount > 0 || updatedCount > 0) return 'alert';
+    if (errorCount > 0) return 'watching';
+    return 'happy';
+  };
+
+  const getCharacterMessage = () => {
+    if (urls.length === 0) return '確認するURLがないよ...';
+    
+    const updatedCount = urls.filter(u => u.status === 'updated').length;
+    const errorCount = urls.filter(u => u.status === 'error').length;
+    
+    if (unreadCount > 0) return `${unreadCount}件の未読通知！`;
+    if (updatedCount > 0) return `${updatedCount}件更新発見！`;
+    if (errorCount > 0) return `${errorCount}件エラーあり`;
+    return `${urls.length}件を確認中！`;
+  };
+
   return (
     <PageLayout 
-      title="監視君ベータ - 更新監視" 
+      title="更新確認君ベータ - 更新監視" 
       subtitle="登録されたURLの更新状況を確認できます"
     >
       <div className="monitor-container">
+        <div className="monitor-header-with-character">
+          <MonitorCharacter 
+            size="small" 
+            mood={getCharacterMood()}
+            message={getCharacterMessage()}
+          />
+        </div>
+        
         <div className="monitor-header">
           <div className="stats">
             <div className="stat-item">
               <span className="stat-number">{urls.length}</span>
-              <span className="stat-label">監視中</span>
+              <span className="stat-label">確認中</span>
             </div>
             <div className="stat-item">
               <span className="stat-number">{urls.filter(u => u.status === 'updated').length}</span>
@@ -152,7 +185,7 @@ const Monitor: React.FC<MonitorProps> = ({
         <div className="url-monitor-grid">
           {sortedUrls.length === 0 ? (
             <div className="no-urls">
-              <p>監視中のURLがありません</p>
+              <p>確認中のURLがありません</p>
               <p>管理ページでURLを追加してください</p>
             </div>
           ) : (

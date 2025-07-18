@@ -10,7 +10,7 @@ const Navigation: React.FC = () => {
       <div className="nav-container">
         <Link to="/" className="nav-logo">
           <span className="logo-icon">🔍</span>
-          監視君ベータ
+          更新確認君ベータ
         </Link>
         <div className="nav-links">
           <Link 
@@ -29,7 +29,7 @@ const Navigation: React.FC = () => {
             to="/monitor" 
             className={`nav-link ${location.pathname === '/monitor' ? 'active' : ''}`}
           >
-            監視ページ
+            更新確認ページ
           </Link>
         </div>
       </div>

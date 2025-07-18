@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { URLItem } from '../types';
+import { getItem, setItem } from '../utils/storage';
 import PageLayout from '../components/PageLayout';
+import MonitorCharacter from '../components/MonitorCharacter';
 import './Admin.css';
 
 interface AdminProps {
@@ -15,9 +17,9 @@ const Admin: React.FC<AdminProps> = ({ onUrlsChange }) => {
   const [errors, setErrors] = useState<{url?: string; title?: string}>({});
 
   useEffect(() => {
-    const savedUrls = localStorage.getItem('monitoredUrls');
+    const savedUrls = getItem('monitoredUrls');
     if (savedUrls) {
-      const parsedUrls = JSON.parse(savedUrls).map((url: any) => ({
+      const parsedUrls = savedUrls.map((url: any) => ({
         ...url,
         lastChecked: new Date(url.lastChecked),
         lastModified: url.lastModified ? new Date(url.lastModified) : null
@@ -28,7 +30,7 @@ const Admin: React.FC<AdminProps> = ({ onUrlsChange }) => {
   }, [onUrlsChange]);
 
   const saveUrls = (updatedUrls: URLItem[]) => {
-    localStorage.setItem('monitoredUrls', JSON.stringify(updatedUrls));
+    setItem('monitoredUrls', updatedUrls);
     setUrls(updatedUrls);
     onUrlsChange(updatedUrls);
   };
@@ -92,10 +94,18 @@ const Admin: React.FC<AdminProps> = ({ onUrlsChange }) => {
 
   return (
     <PageLayout 
-      title="監視君ベータ - URL管理" 
-      subtitle="監視したいURLを登録・管理できます"
+      title="更新確認君ベータ - URL管理" 
+      subtitle="更新確認したいURLを登録・管理できます"
     >
       <div className="admin-container">
+        <div className="admin-header-with-character">
+          <MonitorCharacter 
+            size="small" 
+            mood={urls.length > 0 ? 'watching' : 'sleeping'}
+            message={urls.length > 0 ? `${urls.length}件を確認中` : 'URLを追加してね！'}
+          />
+        </div>
+        
         <div className="add-url-form">
           <h2>新しいURLを追加</h2>
           <div className="form-group">
