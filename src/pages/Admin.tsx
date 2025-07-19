@@ -29,6 +29,7 @@ const Admin: React.FC<AdminProps> = ({ onUrlsChange }) => {
   const [passwordSuccess, setPasswordSuccess] = useState('');
 
   useEffect(() => {
+    // console.log('Admin useEffect: Loading saved URLs');
     const savedUrls = getItem('monitoredUrls');
     if (savedUrls) {
       const parsedUrls = savedUrls.map((url: any) => ({
@@ -36,12 +37,14 @@ const Admin: React.FC<AdminProps> = ({ onUrlsChange }) => {
         lastChecked: new Date(url.lastChecked),
         lastModified: url.lastModified ? new Date(url.lastModified) : null
       }));
+      // console.log('Admin useEffect: Found', parsedUrls.length, 'saved URLs');
       setUrls(parsedUrls);
       onUrlsChange(parsedUrls);
     }
-  }, [onUrlsChange]);
+  }, []); // 空の依存配列で1回のみ実行
 
   const saveUrls = (updatedUrls: URLItem[]) => {
+    // console.log('Admin saveUrls: Saving', updatedUrls.length, 'URLs');
     setItem('monitoredUrls', updatedUrls);
     setUrls(updatedUrls);
     onUrlsChange(updatedUrls);

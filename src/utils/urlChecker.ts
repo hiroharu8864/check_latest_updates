@@ -67,9 +67,9 @@ export class URLChecker {
           callback(updatedItem);
         }
       } catch (error) {
-        console.error('Monitoring error:', error);
+        // console.error('Monitoring error:', error);
       }
-    }, item.checkInterval * 60 * 1000); // minutes to milliseconds
+    }, Math.max(item.checkInterval * 1000, 5000)); // 最小5秒間隔に変更
     
     this.intervals.set(item.id, interval);
   }
@@ -84,7 +84,11 @@ export class URLChecker {
   }
 
   stopAllMonitoring(): void {
-    this.intervals.forEach((interval) => clearInterval(interval));
+    // console.log('Stopping all monitoring, clearing', this.intervals.size, 'intervals');
+    this.intervals.forEach((interval, id) => {
+      // console.log('Clearing interval for', id);
+      clearInterval(interval);
+    });
     this.intervals.clear();
     this.updateCallbacks.clear();
   }

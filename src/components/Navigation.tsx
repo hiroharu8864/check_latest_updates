@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { URLChecker } from '../utils/urlChecker';
 import './Navigation.css';
 
 const Navigation: React.FC = () => {
@@ -11,6 +12,12 @@ const Navigation: React.FC = () => {
     if (window.confirm('ログアウトしますか？')) {
       logout();
     }
+  };
+
+  const handleNavigation = () => {
+    // ページ遷移時にタイマーを一時停止
+    const urlChecker = URLChecker.getInstance();
+    urlChecker.stopAllMonitoring();
   };
 
   return (
@@ -24,18 +31,21 @@ const Navigation: React.FC = () => {
           <Link 
             to="/" 
             className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
+            onClick={handleNavigation}
           >
             ホーム
           </Link>
           <Link 
             to="/admin" 
             className={`nav-link ${location.pathname === '/admin' ? 'active' : ''}`}
+            onClick={handleNavigation}
           >
             管理ページ
           </Link>
           <Link 
             to="/monitor" 
             className={`nav-link ${location.pathname === '/monitor' ? 'active' : ''}`}
+            onClick={handleNavigation}
           >
             更新確認ページ
           </Link>

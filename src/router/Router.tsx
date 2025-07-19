@@ -32,10 +32,7 @@ const Router: React.FC<RouterProps> = ({
           element={
             <Monitor 
               urls={urls}
-              onUrlUpdate={(url) => {
-                const updatedUrls = urls.map(u => u.id === url.id ? url : u);
-                onUrlsChange(updatedUrls);
-              }}
+              onUrlUpdate={() => {}} // 無効化
               notifications={notifications}
               onNotificationRead={onNotificationRead}
             />
