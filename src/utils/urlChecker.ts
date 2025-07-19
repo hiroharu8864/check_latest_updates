@@ -4,12 +4,20 @@ export class URLChecker {
   private static instance: URLChecker;
   private intervals: Map<string, NodeJS.Timeout> = new Map();
   private updateCallbacks: Map<string, (item: URLItem) => void> = new Map();
+  private isDestroyed: boolean = false;
 
   static getInstance(): URLChecker {
     if (!URLChecker.instance) {
       URLChecker.instance = new URLChecker();
     }
     return URLChecker.instance;
+  }
+
+  static resetInstance(): void {
+    if (URLChecker.instance) {
+      URLChecker.instance.destroy();
+      URLChecker.instance = new URLChecker();
+    }
   }
 
   // URLの更新をチェックする（簡易版 - 実際のプロジェクトではサーバーサイドで実装）
@@ -32,24 +40,34 @@ export class URLChecker {
   }
 
   startMonitoring(item: URLItem, onUpdate: (item: URLItem) => void): void {
+    if (this.isDestroyed) return;
+    
     // 既存の監視を停止
     this.stopMonitoring(item.id);
     
     this.updateCallbacks.set(item.id, onUpdate);
     
     const interval = setInterval(async () => {
-      const result = await this.checkURL(item.url);
-      
-      const updatedItem: URLItem = {
-        ...item,
-        lastChecked: new Date(),
-        lastModified: result.lastModified || item.lastModified,
-        status: result.status
-      };
+      if (this.isDestroyed) return;
       
       const callback = this.updateCallbacks.get(item.id);
-      if (callback) {
-        callback(updatedItem);
+      if (!callback) return;
+      
+      try {
+        const result = await this.checkURL(item.url);
+        
+        const updatedItem: URLItem = {
+          ...item,
+          lastChecked: new Date(),
+          lastModified: result.lastModified || item.lastModified,
+          status: result.status
+        };
+        
+        if (!this.isDestroyed && callback) {
+          callback(updatedItem);
+        }
+      } catch (error) {
+        console.error('Monitoring error:', error);
       }
     }, item.checkInterval * 60 * 1000); // minutes to milliseconds
     
@@ -69,5 +87,10 @@ export class URLChecker {
     this.intervals.forEach((interval) => clearInterval(interval));
     this.intervals.clear();
     this.updateCallbacks.clear();
+  }
+
+  destroy(): void {
+    this.stopAllMonitoring();
+    this.isDestroyed = true;
   }
 }

@@ -11,9 +11,13 @@ function App() {
   const [urls, setUrls] = useState<URLItem[]>([]);
   const [notifications, setNotifications] = useState<UpdateNotification[]>([]);
   const [currentNotification, setCurrentNotification] = useState<UpdateNotification | null>(null);
-  const urlChecker = URLChecker.getInstance();
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
+    if (isInitialized) return;
+
+    const urlChecker = URLChecker.getInstance();
+    
     // 保存された通知を読み込み
     const savedNotifications = getItem('notifications');
     if (savedNotifications) {
@@ -57,11 +61,13 @@ function App() {
       });
     }
 
+    setIsInitialized(true);
+
     // クリーンアップ関数
     return () => {
       urlChecker.stopAllMonitoring();
     };
-  }, [urlChecker]);
+  }, [isInitialized]);
 
   useEffect(() => {
     // 通知をローカルストレージに保存
@@ -80,6 +86,7 @@ function App() {
   const handleUrlsChange = (newUrls: URLItem[]) => {
     setUrls(newUrls);
     
+    const urlChecker = URLChecker.getInstance();
     // 既存の監視を停止
     urlChecker.stopAllMonitoring();
     
