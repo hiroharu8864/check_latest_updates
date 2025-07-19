@@ -14,17 +14,17 @@ React 19ベースのWebサイト更新監視アプリケーション。指定し
 ## スクリーンショット
 
 ### 🔍 監視ダッシュボード
-![Monitor Dashboard](docs/images/monitor-dashboard.png)
+![Monitor Dashboard](./docs/images/monitor-dashboard.png)
 
 *登録されたURLの更新状況をリアルタイムで確認。フィルタリングや並び替え機能も搭載。*
 
 ### ⚙️ URL管理ページ  
-![Admin Page](docs/images/admin-page.png)
+![Admin Page](./docs/images/admin-page.png)
 
 *新しいURLの追加と既存URLの管理。チェック間隔やパスワード変更も可能。*
 
 ### 🔔 更新通知
-![Update Notification](docs/images/update-notification.png)
+![Update Notification](./docs/images/update-notification.png)
 
 *更新検出時のポップアップ通知とキャラクターによる状況表示。*
 
