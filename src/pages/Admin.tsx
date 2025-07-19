@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { URLItem } from '../types';
 import { getItem, setItem } from '../utils/storage';
+import { addMockDataToUrls } from '../utils/mockData';
+import { useAuth } from '../contexts/AuthContext';
+import { checkPasswordStrength } from '../utils/crypto';
 import PageLayout from '../components/PageLayout';
 import MonitorCharacter from '../components/MonitorCharacter';
 import './Admin.css';
@@ -10,11 +13,20 @@ interface AdminProps {
 }
 
 const Admin: React.FC<AdminProps> = ({ onUrlsChange }) => {
+  const { changePassword } = useAuth();
   const [urls, setUrls] = useState<URLItem[]>([]);
   const [newUrl, setNewUrl] = useState('');
   const [newTitle, setNewTitle] = useState('');
   const [newInterval, setNewInterval] = useState(60);
   const [errors, setErrors] = useState<{url?: string; title?: string}>({});
+  
+  // パスワード変更関連の状態
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState('');
 
   useEffect(() => {
     const savedUrls = getItem('monitoredUrls');
@@ -80,6 +92,11 @@ const Admin: React.FC<AdminProps> = ({ onUrlsChange }) => {
     setErrors({});
   };
 
+  const addTestData = () => {
+    const updatedUrls = addMockDataToUrls(urls);
+    saveUrls(updatedUrls);
+  };
+
   const removeUrl = (id: string) => {
     const updatedUrls = urls.filter(url => url.id !== id);
     saveUrls(updatedUrls);
@@ -90,6 +107,41 @@ const Admin: React.FC<AdminProps> = ({ onUrlsChange }) => {
       url.id === id ? { ...url, ...updates } : url
     );
     saveUrls(updatedUrls);
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordError('');
+    setPasswordSuccess('');
+
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError('新しいパスワードが一致しません');
+      return;
+    }
+
+    const passwordStrength = checkPasswordStrength(newPassword);
+    if (!passwordStrength.isValid) {
+      setPasswordError('パスワードの強度が不十分です');
+      return;
+    }
+
+    try {
+      const success = await changePassword(oldPassword, newPassword);
+      if (success) {
+        setPasswordSuccess('パスワードが正常に変更されました');
+        setOldPassword('');
+        setNewPassword('');
+        setConfirmNewPassword('');
+        setTimeout(() => {
+          setShowPasswordChange(false);
+          setPasswordSuccess('');
+        }, 2000);
+      } else {
+        setPasswordError('現在のパスワードが正しくありません');
+      }
+    } catch (error) {
+      setPasswordError('パスワード変更に失敗しました');
+    }
   };
 
   return (
@@ -147,7 +199,74 @@ const Admin: React.FC<AdminProps> = ({ onUrlsChange }) => {
               max="1440"
             />
           </div>
-          <button onClick={addUrl} className="add-button">追加</button>
+          <div className="button-group">
+            <button onClick={addUrl} className="add-button">追加</button>
+            <button onClick={addTestData} className="test-button">
+              テストデータ追加
+            </button>
+          </div>
+        </div>
+
+        <div className="security-settings">
+          <h2>セキュリティ設定</h2>
+          <button 
+            onClick={() => setShowPasswordChange(!showPasswordChange)}
+            className="password-change-toggle"
+          >
+            🔒 パスワード変更
+          </button>
+          
+          {showPasswordChange && (
+            <div className="password-change-form">
+              <form onSubmit={handlePasswordChange}>
+                <div className="form-group">
+                  <label>現在のパスワード:</label>
+                  <input
+                    type="password"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>新しいパスワード:</label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>新しいパスワード（確認）:</label>
+                  <input
+                    type="password"
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                {passwordError && (
+                  <div className="error-message">{passwordError}</div>
+                )}
+                {passwordSuccess && (
+                  <div className="success-message">{passwordSuccess}</div>
+                )}
+                <div className="button-group">
+                  <button type="submit" className="add-button">
+                    変更
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={() => setShowPasswordChange(false)}
+                    className="cancel-button"
+                  >
+                    キャンセル
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
         </div>
 
         <div className="url-list">

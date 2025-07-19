@@ -1,9 +1,17 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import './Navigation.css';
 
 const Navigation: React.FC = () => {
   const location = useLocation();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    if (window.confirm('ログアウトしますか？')) {
+      logout();
+    }
+  };
 
   return (
     <nav className="navigation">
@@ -31,6 +39,15 @@ const Navigation: React.FC = () => {
           >
             更新確認ページ
           </Link>
+        </div>
+        <div className="nav-auth">
+          <button 
+            onClick={handleLogout}
+            className="logout-button"
+            title="ログアウト"
+          >
+            🚪
+          </button>
         </div>
       </div>
     </nav>

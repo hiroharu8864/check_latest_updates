@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { URLItem, UpdateNotification } from '../types';
+import { URLItem, UpdateNotification, UpdateDiff } from '../types';
+import { generateMockUpdateDiffs } from '../utils/mockData';
 import PageLayout from '../components/PageLayout';
 import MonitorCharacter from '../components/MonitorCharacter';
+import UpdateSummary from '../components/UpdateSummary';
 import './Monitor.css';
 
 interface MonitorProps {
@@ -226,9 +228,15 @@ const Monitor: React.FC<MonitorProps> = ({
                 </div>
                 
                 {url.status === 'updated' && (
-                  <div className="update-indicator">
-                    <span className="update-badge">新しい更新があります！</span>
-                  </div>
+                  <>
+                    <div className="update-indicator">
+                      <span className="update-badge">新しい更新があります！</span>
+                    </div>
+                    <UpdateSummary 
+                      url={url} 
+                      updateDiffs={url.id === 'mock-updated-1' ? generateMockUpdateDiffs() : []}
+                    />
+                  </>
                 )}
               </div>
             ))

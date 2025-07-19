@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { URLItem, UpdateNotification } from './types';
 import { URLChecker } from './utils/urlChecker';
 import { getItem, setItem } from './utils/storage';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import Router from './router/Router';
 import Popup from './components/Popup';
 
@@ -110,19 +112,21 @@ function App() {
   };
 
   return (
-    <>
-      <Router 
-        urls={urls}
-        onUrlsChange={handleUrlsChange}
-        notifications={notifications}
-        onNotificationRead={handleNotificationRead}
-      />
-      <Popup 
-        notification={currentNotification}
-        onClose={handlePopupClose}
-        onMarkAsRead={handleNotificationRead}
-      />
-    </>
+    <AuthProvider>
+      <ProtectedRoute>
+        <Router 
+          urls={urls}
+          onUrlsChange={handleUrlsChange}
+          notifications={notifications}
+          onNotificationRead={handleNotificationRead}
+        />
+        <Popup 
+          notification={currentNotification}
+          onClose={handlePopupClose}
+          onMarkAsRead={handleNotificationRead}
+        />
+      </ProtectedRoute>
+    </AuthProvider>
   );
 }
 

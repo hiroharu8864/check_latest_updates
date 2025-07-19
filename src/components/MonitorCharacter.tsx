@@ -47,12 +47,12 @@ const MonitorCharacter: React.FC<MonitorCharacterProps> = ({
       case 'alert':
         return '更新を発見しました！';
       case 'sleeping':
-        return 'zzz... 監視中...';
+        return 'zzz... 確認中...';
       case 'happy':
         return 'すべて順調です！';
       case 'watching':
       default:
-        return 'サイトを監視中...';
+        return 'サイトを確認中...';
     }
   };
 
