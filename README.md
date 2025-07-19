@@ -166,4 +166,4 @@ Private Project
 
 ## 作成者
 
-Update Checker Beta Team
+haru-chan
