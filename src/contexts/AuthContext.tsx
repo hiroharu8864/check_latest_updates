@@ -87,7 +87,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       return false;
     } catch (error) {
-      console.error('Login error:', error);
+      // console.error('Login error:', error);
       return false;
     }
   };
@@ -118,7 +118,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         authenticated: true
       }));
     } catch (error) {
-      console.error('Password setup error:', error);
+      // console.error('Password setup error:', error);
       throw new Error('パスワード設定に失敗しました');
     }
   };
@@ -149,7 +149,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setItem('auth_data', newAuthData);
       return true;
     } catch (error) {
-      console.error('Password change error:', error);
+      // console.error('Password change error:', error);
       return false;
     }
   };

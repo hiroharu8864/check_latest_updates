@@ -59,7 +59,7 @@ const Login: React.FC = () => {
       }
     } catch (err) {
       setError('処理中にエラーが発生しました');
-      console.error('Auth error:', err);
+      // console.error('Auth error:', err);
     } finally {
       setLoading(false);
     }
