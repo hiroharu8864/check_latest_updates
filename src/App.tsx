@@ -56,7 +56,12 @@ function App() {
         });
       });
     }
-  }, []);
+
+    // クリーンアップ関数
+    return () => {
+      urlChecker.stopAllMonitoring();
+    };
+  }, [urlChecker]);
 
   useEffect(() => {
     // 通知をローカルストレージに保存

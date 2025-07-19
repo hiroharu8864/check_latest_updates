@@ -32,6 +32,9 @@ export class URLChecker {
   }
 
   startMonitoring(item: URLItem, onUpdate: (item: URLItem) => void): void {
+    // 既存の監視を停止
+    this.stopMonitoring(item.id);
+    
     this.updateCallbacks.set(item.id, onUpdate);
     
     const interval = setInterval(async () => {
@@ -44,7 +47,10 @@ export class URLChecker {
         status: result.status
       };
       
-      onUpdate(updatedItem);
+      const callback = this.updateCallbacks.get(item.id);
+      if (callback) {
+        callback(updatedItem);
+      }
     }, item.checkInterval * 60 * 1000); // minutes to milliseconds
     
     this.intervals.set(item.id, interval);
