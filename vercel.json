@@ -1,40 +1,11 @@
 {
-  "version": 2,
-  "name": "update-checker-beta",
-  "builds": [
+  "buildCommand": "yarn build",
+  "outputDirectory": "build",
+  "framework": "create-react-app",
+  "rewrites": [
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/static/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=31536000,immutable"
-      },
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/service-worker.js",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "/service-worker.js"
-    },
-    {
-      "src": "/manifest.json",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "/manifest.json"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
@@ -75,10 +46,5 @@
   ],
   "env": {
     "REACT_APP_ENVIRONMENT": "production"
-  },
-  "build": {
-    "env": {
-      "REACT_APP_ENVIRONMENT": "production"
-    }
   }
 }
